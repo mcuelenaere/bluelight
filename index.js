@@ -15,8 +15,10 @@ class BlueLight {
 
         var stateChangeListener = this._stateChange.bind(this);
         var discoverPeripheralListener = this._discoverPeripheral.bind(this);
+        var scanningStoppedListener = this._scanningStopped.bind(this);
         noble.on('stateChange', stateChangeListener);
         noble.on('discover', discoverPeripheralListener);
+        noble.on('scanStop', scanningStoppedListener);
 
         // dynamically define the dispose function so we don't need to keep track
         // of the registered event listeners handles when trying to unregister them
@@ -24,6 +26,7 @@ class BlueLight {
             // unbind event handlers
             noble.removeListener('stateChange', stateChangeListener);
             noble.removeListener('discover', discoverPeripheralListener);
+            noble.removeListener('scanStop', scanningStoppedListener);
 
             // stop scanning, if we were still doing this
             if (this._pendingScanTimeoutId) {
@@ -71,6 +74,18 @@ class BlueLight {
         });
     }
 
+    _scanningStopped() {
+        // pass on to our listeners
+        this.emit('scanStop');
+
+        // clear any pending scan timeout, if present
+        if (this._pendingScanTimeoutId) {
+            clearTimeout(this._pendingScanTimeoutId);
+            this._pendingScanTimeoutId = null;
+            this._scanRequested = false;
+        }
+    }
+
     scanFor(timeout) {
         this._scanRequested = true;
         if (this._pendingScanTimeoutId !== null) {
@@ -83,7 +98,6 @@ class BlueLight {
 
         this._pendingScanTimeoutId = setTimeout(() => {
             noble.stopScanning();
-            this.emit('scanStop');
             this._scanRequested = false;
             this._pendingScanTimeoutId = null;
         }, timeout);
