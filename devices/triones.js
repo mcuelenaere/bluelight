@@ -82,7 +82,7 @@ class Triones {
     }
 
     static isCompatibleWith(advertisement) {
-        if (advertisement.localName.startsWith('Triones-') && advertisement.serviceUuids.indexOf('ffd5') !== -1) {
+        if (typeof advertisement.localName == 'string' && advertisement.localName.startsWith('Triones-') && advertisement.serviceUuids.indexOf('ffd5') !== -1) {
             return true;
         }
 
