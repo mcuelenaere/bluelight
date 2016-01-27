@@ -62,6 +62,7 @@ class BlueLight {
                 peripheral.once('disconnect', () => {
                     this._devices.delete(peripheral.uuid);
                     this._alreadySeenPeripheralUuids.delete(peripheral.uuid);
+                    this.emit('disconnect', device);
                 });
                 this.emit('discover', device);
             }
