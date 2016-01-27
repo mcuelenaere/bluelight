@@ -53,6 +53,10 @@ class Triones {
         return this._peripheral.advertisement.localName;
     }
 
+    get uniqueId() {
+        return this._peripheral.uuid;
+    }
+
     toString() {
         return "Triones[uuid=" + this._peripheral.uuid + ",friendlyName=" + this.friendlyName + "]";
     }
