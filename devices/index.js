@@ -4,6 +4,7 @@ const noble = require('noble');
 
 const hardwareModules = new Set([
     require('./triones'),
+    require('./magicblue'),
 ]);
 
 function createFor(peripheral) {
