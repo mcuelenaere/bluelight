@@ -1,6 +1,6 @@
 'use strict';
 
-const noble = require('noble');
+const scanArbitrator = require('../scan_arbitrator');
 
 const hardwareModules = new Set([
     require('./triones'),
@@ -10,13 +10,20 @@ const hardwareModules = new Set([
 function createFor(peripheral) {
     for (let module of hardwareModules) {
         if (module.isCompatibleWith(peripheral.advertisement)) {
-            // Stop scanning: some BT devices do not support
+            // Pause scanning: some BT devices do not support
             // scanning and connecting to a peripheral at
             // the same time.
-            noble.stopScanning();
+            scanArbitrator.pauseScanning();
 
             // connect to the device
-            return module.createFor(peripheral);
+            let devicePromise = module.createFor(peripheral);
+
+            // resume scanning in ~100ms
+            setTimeout(() => {
+                scanArbitrator.resumeScanning();
+            }, 100);
+
+            return devicePromise;
         }
     }
 
