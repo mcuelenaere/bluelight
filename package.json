@@ -2,6 +2,7 @@
   "author": "Maurus Cuelenaere <mcuelenaere@gmail.com>",
   "license": "MIT",
   "name": "bluelight",
+  "version": "0.1.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/mcuelenaere/bluelight.git"
