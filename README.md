@@ -15,6 +15,10 @@ const Bluelight = require('bluelight'),
       bluelight = new Bluelight();
 ```
 
+## Example projects using this library
+
+  * [greenlight](https://github.com/mcuelenaere/greenlight): a simple web UI + REST API around bluelight
+
 ### Actions
 
 #### Start scanning
